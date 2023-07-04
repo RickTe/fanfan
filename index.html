@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="http://cdn.staticfile.org/emoji/0.2.2/emoji.css" rel="stylesheet" type="text/css" /> -->
+    <title>夏日清凉小风扇</title>
+    <style>
+        html, body {
+            height: 100%;
+            background-color: lightyellow;
+        }
+
+        .app {
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .title {
+            font-size: 30px;
+            font-weight: bold;
+            text-align: center;
+            padding-bottom: 20px;
+        }
+
+        .user {
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .caption {
+            width: 240px;
+            text-align: center;
+            color: #999;
+            padding-bottom: 20px;
+        }
+
+        .top {
+            position: relative;
+            height: 240px;
+            width: 240px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 120px;
+            border: 5px solid black;
+        }
+
+        .protect {
+            position: absolute;
+            z-index: 100;
+            left: -43px;
+        }
+
+        .fan-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stick {
+            width: 20px;
+            height: 120px;
+            background-color: black;
+        }
+
+        .pedestal {
+            width: 230px;
+            height: 20px;
+            background-color: black;
+        }
+
+        .bottom {
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            line-height: 1;
+            white-space: nowrap;
+            cursor: pointer;
+            background: #fff;
+            border: 1px solid #dcdfe6;
+            color: #606266;
+            -webkit-appearance: none;
+            text-align: center;
+            box-sizing: border-box;
+            outline: none;
+            margin: 0;
+            transition: .1s;
+            font-weight: 500;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            padding: 12px 20px;
+            font-size: 14px;
+            border-radius: 4px;
+        }
+
+        .btn:hover {
+            background-color: #409eff;
+            color: white;
+        }
+
+        .start,
+        .active {
+            background-color: #409eff;
+            color: white;
+        }
+
+        @-webkit-keyframes rotation {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @-webkit-keyframes buffer {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        .low {
+            animation: rotation 0.4s linear infinite;
+        }
+
+        .middle {
+            animation: rotation 0.25s linear infinite;
+        }
+
+        .high {
+            animation: rotation 0.07s linear infinite;
+        }
+
+        .buffer {
+            -webkit-transform: rotate(360deg);
+            animation: buffer 1s ease-out 1;
+        }
+    </style>
+</head>
+
+<body>
+<div class="app">
+    <div class="title">夏日清凉小风扇</div>
+    <div class="user"></div>
+    <div class="caption">除了没有风，什么都好！</div>
+    <div class="fan-wrapper">
+        <div class="top">
+            <div class="protect">
+                
+            </div>
+            <div id="degree">
+               
+            </div>
+        </div>
+        <div class="stick"></div>
+        <div class="pedestal"></div>
+    </div>
+    <div class="bottom">
+        <button class="btn" id="switch" onclick="start()">开关</button>
+        <button class="btn gear" id="low" onclick="gear('低')">低</button>
+        <button class="btn gear" id="middle" onclick="gear('中')">中</button>
+        <button class="btn gear" id="high" onclick="gear('高')">高</button>
+    </div>
+</div>
+</body>
+
+<script>
+  const s = document.getElementById('switch');
+  const low = document.getElementById('low');
+  const middle = document.getElementById('middle');
+  const high = document.getElementById('high');
+  const gears = document.getElementsByClassName("gear");
+  const degree = document.getElementById("degree");
+  let activeText = '';
+
+  const start = () => {
+    if (hasClass(s, 'start')) {
+      removeClass(s, 'start');
+      degree.className = 'buffer';
+      for (let i = 0; i < gears.length; i++) {
+        gears[i].classList.remove("active");
+      }
+    } else {
+      addClass(s, 'start');
+      addClass(low, 'active');
+      degree.className = 'low';
+    }
+  };
+
+  const addClass = (obj, cn) => {
+    obj.classList.add(cn);
+  };
+  const hasClass = (obj, cn) => {
+    let reg = new RegExp("\\b" + cn + "\\b");
+    return reg.test(obj.className);
+  };
+  const removeClass = (obj, cn) => {
+    obj.classList.remove(cn);
+  };
+
+  const gear = (text) => {
+    activeText = text;
+    if (text == '低') {
+      degree.className = 'low';
+    } else if (text == '中') {
+      degree.className = 'middle';
+    } else {
+      degree.className = 'high';
+    }
+    addClass(s, 'start');
+    for (let i = 0; i < gears.length; i++) {
+      gears[i].classList.remove("active");
+    }
+    for (let i = 0; i < gears.length; i++) {
+      if (gears[i].innerHTML == text) {
+        gears[i].classList.add("active");
+        return;
+      }
+    }
+  };
+</script>
+</html>
